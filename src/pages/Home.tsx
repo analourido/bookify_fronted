@@ -1,4 +1,3 @@
-import React from 'react'
 
 function Home() {
     return (
@@ -8,8 +7,7 @@ function Home() {
                 <p className="text-lg font-normal text-primary-65 lg:text-xl dark:text-primary-65"> Descubre, recuerda y comparte tus historias favoritas.</p>
                 <button
                     type="button"
-                    className="text-primary-50 bg-[rgba(247,229,221,0.81)]  focus:outline-none hover:bg-[rgba(242,203,180,0.9)] font-medium rounded-full text-sm px-5 py-2.5 my-5"
-                >
+                    className="text-primary-50 bg-[rgba(247,229,221,0.81)]  focus:outline-none hover:bg-[rgba(242,203,180,0.9)] font-medium rounded-full text-sm px-5 py-2.5 my-5">
                     Register here
                 </button>
 
