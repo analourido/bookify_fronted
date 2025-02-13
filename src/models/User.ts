@@ -5,5 +5,5 @@ export default interface User {
     email: string
     password: string
     course?: string
-    accepNotifications: boolean
+    acceptNotifications: boolean
 }
