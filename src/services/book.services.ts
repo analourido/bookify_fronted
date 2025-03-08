@@ -4,7 +4,7 @@ const API_URL_BASE = import.meta.env.VITE_API_URL_BASE
 
 export class BookService {
     static async search(title?: string) {
-        let url = API_URL_BASE + '/book?'
+        let url = API_URL_BASE + '/books?'
         if (title) url += 'title=' + title
 
         return await fetchAPI(url, {
@@ -17,7 +17,7 @@ export class BookService {
     }
 
     static async getById(id: number) {
-        return await fetchAPI(API_URL_BASE + '/book/' + id, {
+        return await fetchAPI(API_URL_BASE + '/books/' + id, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -26,29 +26,29 @@ export class BookService {
         })
     }
 
-    static async create(offer: Partial<Book>) {
-        return await fetchAPI(API_URL_BASE + '/book', {
+    static async create(book: Partial<Book>) {
+        return await fetchAPI(API_URL_BASE + '/books', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(offer),
+            body: JSON.stringify(book),
             credentials: 'include'
         })
     }
 
-    static async update(id: number, offer: Partial<Book>) {
-        return await fetchAPI(API_URL_BASE + '/book/' + id, {
+    static async update(id: number, book: Partial<Book>) {
+        return await fetchAPI(API_URL_BASE + '/books/' + id, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(offer),
+            body: JSON.stringify(book),
             credentials: 'include'
         })
     }
     static async delete(id: number) {
-        return await fetchAPI(API_URL_BASE + '/book/' + id, {
+        return await fetchAPI(API_URL_BASE + '/books/' + id, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json'

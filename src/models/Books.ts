@@ -1,10 +1,13 @@
-export default interface Offer {
+import Review from "./Review"
+
+export default interface Book {
     id: number
     title: string
     author: string
     genre: string
     description?: string
-    published: string
+    publishedAt: string
     idCategory?: number | null
-    // review
+    reviews: Review[]
 }
+

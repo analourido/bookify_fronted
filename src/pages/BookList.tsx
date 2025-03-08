@@ -4,7 +4,7 @@ import { BookService } from "../services/book.services";
 import { Link, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function OfferList() {
+function Booklist() {
     const [books, setBooks] = useState<Books[]>();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
@@ -90,8 +90,8 @@ function OfferList() {
             </div>
 
             {loading && <p>Loading...</p>}
-            {error && <p>{error}</p>}
-            {books?.length === 0 && <p>No hay ofertas disponibles</p>}
+            {error && <p>Error:{error}</p>}
+            {books?.length === 0 && <p>No hay libros disponibles</p>}
             <div className="flex flex-wrap flex-row gap-4 items-center justify-center">
 
                 {books?.map((book) => (
@@ -121,4 +121,4 @@ function OfferList() {
     );
 }
 
-export default OfferList;
+export default Booklist;

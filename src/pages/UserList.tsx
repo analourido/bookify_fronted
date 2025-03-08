@@ -6,7 +6,6 @@ interface User {
   name: string
   surname: string
   role: string
-  course: string
   email: string
   active: boolean
   acceptNotifications: boolean
@@ -19,9 +18,12 @@ function UserList() {
   useEffect(() => {
     async function call() {
       try {
+        console.log('Fetching users...');
         const userList = await UserService.getAll()
+        console.log('Users fetched:', userList);
         setUsers(userList)
       } catch (error) {
+        console.error('Error fetching users:', error);
         const msg = error instanceof Error ? error.message : 'Error desconocido'
         setMessage(msg)
       } finally {
@@ -33,7 +35,7 @@ function UserList() {
 
   if (loading) return <div>Loading...</div>
 
-
+  console.log('Users state before rendering:', users);
   return (
 
 
@@ -54,9 +56,6 @@ function UserList() {
             <th scope="col" className="px-6 py-3">
               Rol
             </th>
-            <th scope="col" className="px-6 py-3">
-              Curso
-            </th>
           </tr>
         </thead>
         <tbody>
@@ -73,9 +72,6 @@ function UserList() {
               </td>
               <td className="px-6 py-4">
                 {user.role}
-              </td>
-              <td className="px-6 py-4">
-                {user.course}
               </td>
             </tr>
           )}
