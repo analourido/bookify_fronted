@@ -1,3 +1,5 @@
+import Book from "./Books"
+
 export default interface User {
     id: number
     name: string
@@ -7,4 +9,5 @@ export default interface User {
     role: string
     active: boolean
     acceptNotifications: boolean
+    books: Book[]
 }

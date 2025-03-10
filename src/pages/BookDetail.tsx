@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { Link, useParams } from "react-router-dom"
 import { BookService } from "../services/book.services"
 import Book from "../models/Books"
-
 function BookDetail() {
     const { id } = useParams()
     const [book, setBook] = useState<Book>()
@@ -38,6 +37,7 @@ function BookDetail() {
                     <span className="font-semibold text-primary-70">Fecha publicación:</span>{' '}
                     {new Date(book.publishedAt).toLocaleDateString()}
                 </div>
+
 
             </div>
             <Link

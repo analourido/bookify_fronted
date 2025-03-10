@@ -12,6 +12,7 @@ import BookForm from './pages/BookForm'
 import CategoryManager from './pages/CategoryManager'
 import BookDetail from './pages/BookDetail'
 import { Toaster } from 'react-hot-toast'
+import CategoryDetail from './pages/CategoryDetail'
 
 function App() {
 
@@ -33,6 +34,7 @@ function App() {
               <Route path="/books/new" element={<BookForm />} />
               <Route path="/books/edit/:id" element={<BookForm />} />
               <Route path="/categories" element={<CategoryManager />} />
+              <Route path="/categories/:id" element={<CategoryDetail />} />
             </Routes>
           </div>
           <Footer />

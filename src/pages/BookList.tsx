@@ -3,22 +3,25 @@ import Books from "../models/Books";
 import { BookService } from "../services/book.services";
 import { Link, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useAuth } from "../contexts/AuthContext";
 
 function Booklist() {
+    const { isAdmin } = useAuth()
     const [books, setBooks] = useState<Books[]>();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
     //const [titleQuery, setTitleQuery] = useState(null)
 
     const [queryParams, setQueryParams] = useSearchParams();
-    const titleQuery = queryParams.get("title") || "";
+    const titleAuthorQuery = queryParams.get("title") || "";
+
 
     useEffect(() => {
-        BookService.search(titleQuery)
+        BookService.search(titleAuthorQuery)
             .then(setBooks)
             .catch((error) => setError(error.message))
             .finally(() => setLoading(false));
-    }, [titleQuery]);
+    }, [titleAuthorQuery]);
 
     const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newTitle = e.target.value;
@@ -40,7 +43,6 @@ function Booklist() {
 
     return (
         <div className="w-full m-5  bg-[rgba(43,54,114,0.13)] rounded-lg shadow-md">
-
             <div id="defaultTabContent">
                 <div className="p-4 rounded-lg md:p-8" id="about" role="tabpanel" aria-labelledby="about-tab">
                     <div className="flex flex-col gap-4">
@@ -59,9 +61,9 @@ function Booklist() {
                             </div>
                             <input
                                 className="block w-full p-4 ps-10 text-sm text-primary-85 border border-primary-65 rounded-lg bg-[rgba(43,54,114,0.13)] focus:ring-primary-85 focus:border-primary-85 transition-all duration-300 ease-in-out"
-                                value={titleQuery}
+                                value={titleAuthorQuery}
                                 onChange={handleSearchChange}
-                                placeholder="Buscar por título"
+                                placeholder="Buscar por título o autor"
                             />
                         </div>
 
@@ -88,18 +90,23 @@ function Booklist() {
                                             >
                                                 Ver
                                             </Link>
-                                            <Link
-                                                className="px-3 py-2 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
-                                                to={`/books/edit/${book.id}`}
-                                            >
-                                                Editar
-                                            </Link>
-                                            <button
-                                                className="px-3 py-2 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
-                                                onClick={() => handleDelete(book.id)}
-                                            >
-                                                Borrar
-                                            </button>
+                                            {isAdmin && (
+                                                <>
+                                                    <Link
+                                                        className="px-3 py-2 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
+                                                        to={`/books/edit/${book.id}`}
+                                                    >
+                                                        Editar
+                                                    </Link>
+
+                                                    <button
+                                                        className="px-3 py-2 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
+                                                        onClick={() => handleDelete(book.id)}
+                                                    >
+                                                        Borrar
+                                                    </button>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

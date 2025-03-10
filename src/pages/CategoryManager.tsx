@@ -1,6 +1,7 @@
 import { FormEvent, useEffect, useState } from "react"
 import { CategoryService } from "../services/category.service"
 import Category from "../models/Category"
+import { Link } from "react-router-dom"
 
 interface CategoryFormProps {
     onSubmit: (e: FormEvent, name: string) => void
@@ -9,7 +10,6 @@ function CategoryForm({ onSubmit }: CategoryFormProps) {
     const [name, setName] = useState('')
     return (
         <form onSubmit={(e) => onSubmit(e, name)} className="text-white">
-            <label className="m-2" htmlFor="name">Nombre:</label>
             <input id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
             <button className="p-2 m-2">Guardar</button>
         </form>
@@ -24,13 +24,15 @@ function CategoryList({ categories, onDelete }: CategoryListProps) {
     return (
         <div className="text-white">
             {categories.map(category =>
-                <div className="text-primary-90" key={category.id}>
+                <div className="m-3 text-primary-90" key={category.id}>
                     {category.name}
-                    <button className="text-xs mx-5 p-1 " onClick={() => onDelete(category.id)}>Borrar</button>
+                    <Link className="m-2 px-1 py-1 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
+                        to={`/categories/${category.id}`}> Ver </Link>
+                    <button className=" px-1 py-1 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md" onClick={() => onDelete(category.id)}>Borrar</button>
                 </div>
             )}
         </div>
-    )   
+    )
 }
 
 
@@ -68,7 +70,7 @@ function CategoryManager() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-[url('img/fondos/fondo.png')] bg-cover bg-center">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-cover bg-center">
             <div className="w-full max-w-4xl flex rounded-lg shadow-md overflow-hidden">
                 <img
                     className="object-cover w-1/3 rounded-s-lg"

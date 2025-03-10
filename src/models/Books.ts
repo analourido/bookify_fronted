@@ -9,5 +9,6 @@ export default interface Book {
     publishedAt: string
     idCategory?: number | null
     reviews: Review[]
+    idUser: number
 }
 

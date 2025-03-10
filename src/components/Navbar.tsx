@@ -1,37 +1,42 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import { Collapse } from 'flowbite';
-import { useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 function Navbar() {
     const { user, isAdmin, isAuthenticated, logout } = useAuth()
-    const menuHamburguesa = useRef(null)
-    const menuHamburguesaTriger = useRef(null)
+    const [randomColor, setRandomColor] = useState('');
+    //const menuHamburguesa = useRef(null)
+    //const menuHamburguesaTriger = useRef(null)
     const userLogured = () => {
         if (!user) return ''
         if (isAuthenticated && user?.role === 'admin') return 'Eres admin'
         if (isAuthenticated) return 'Eres user'
     }
 
-    const handleCollapse = () => {
+
+
+    useEffect(() => {
+        // generar color aleatorio para el icono del perfil del usuario
+        const randomHexColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+        setRandomColor(randomHexColor);
+    }, []);
+
+    /*const handleCollapse = () => {
         const collapse = new Collapse(menuHamburguesa.current, menuHamburguesaTriger.current);
         collapse.toggle();
         console.log('click')
-    }
+    }*/
 
     return (
-        <nav className="bg-[rgba(43,54,114,0.79)]">
+        <nav className="bg-[rgba(43,54,114,0.79)] p-4">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                {/* Logo */}
                 <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
                     <img src="img\logos\logo_naranja.png" className="h-8" alt="EmpleateTu Logo" />
                     <span className="self-center text-2xl font-semibold whitespace-nowrap text-white drop-shadow-md">
                         Bookify
                     </span>
                 </Link>
-
-                {/* Botones y menú  */}
-                <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <div className="flex items-center md:order-2 space-x-3">
                     {!isAuthenticated && (
                         <Link
                             to="/login"
@@ -42,37 +47,32 @@ function Navbar() {
                     )}
                     {isAuthenticated && (
                         <button
-                            className="text-white hover:text-primary-90 font-medium drop-shadow-md"
+                            className="flex items-center text-white hover:text-primary-90 font-medium drop-shadow-md"
                             onClick={logout}
                         >
                             Cerrar Sesión
                         </button>
                     )}
-                    <button
-                        ref={menuHamburguesaTriger}
-                        onClick={handleCollapse}
-                        className="md:hidden text-white hover:text-primary-90"
-                    >
-                        <span className="sr-only">Abrir menú principal</span>
-                        <svg
-                            className="w-6 h-6"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M4 6h16M4 12h16m-7 6h7"
-                            />
-                        </svg>
-                    </button>
-                </div>
 
-                {/* Menú principal */}
+                    {/* Información del Usuario */}
+                    {user?.email && (
+                        <div className="flex items-center space-x-3 rtl:space-x-reverse">
+                            {/* Icono de Usuario */}
+                            <div
+                                className="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden rounded-full"
+                                style={{ backgroundColor: randomColor }}
+                            >
+                                <span className="font-medium text-gray-600 dark:text-gray-900">
+                                    {user.email[0].toUpperCase()}
+                                </span>
+                            </div>
+                            {/* Texto de Usuario */}
+                            <div className="text-white dark:text-gray-200">
+                                {userLogured()}
+                            </div>
+                        </div>
+                    )}
+                </div>
                 <div
                     className="items-center justify-between hidden w-full md:flex md:w-auto md:order-1"
                     id="navbar"
@@ -137,16 +137,14 @@ function Navbar() {
                             </>
                         )}
                     </ul>
+
+
                 </div>
+
             </div>
 
-            {/* Información del usuario */}
-            {user?.email && (
 
-                <div className="text-orange-300 text-sm text-center md:text-right px-4 py-2 drop-shadow-md">
-                    {user.email} {userLogured()}
-                </div>
-            )}
+
         </nav>
 
 
