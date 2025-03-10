@@ -1,25 +1,84 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary-50: #2b3672;
-  --color-primary-60: #004d62;
+/* ==== Colores Personalizados ==== */
+:root {
+  --color-primary-50: rgb(43, 54, 115);
+  /* Azul oscuro principal */
+  --color-primary-60: rgb(0, 76, 97);
+  /* Azul profundo */
   --color-primary-65: #94808a;
+  /* Gris pálido */
   --color-primary-70: #ffe2d6;
+  /* Beige claro */
   --color-primary-80: #fbe0cf;
+  /* Crema */
   --color-primary-85: #f2cbb4;
-  /*naranja + claro*/
+  /* Beige suave */
   --color-primary-90: #fac991;
-  /*naranja*/
-  --color-semitransparent: rgba(255, 255, 255, 0.8);
-  /* Fondo blanco semitransparente */
+  /* Naranja */
 
-  --color-semitransparent: rgba(43, 54, 114, 0.9);
-  /* Fondo oscuro semitransparente */
+  /* Colores translúcidos */
+  --color-semitransparent-light: rgba(255, 255, 255, 0.8);
+  /* Blanco translúcido */
+  --color-semitransparent-dark: rgba(43, 54, 114, 0.9);
+  /* Azul oscuro translúcido */
 }
 
+/* ==== Estilos Globales ==== */
 body {
   background-image: url("img/fondos/fondo.png");
-  background-size: cover;
-  background-position: center;
+  background-position: center center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  /* Añade esta línea */
+  color: var(--color-primary-50);
+}
+  
+/* ==== Secciones Específicas ==== */
+section {
+  background-color: var(--color-semitransparent-light);
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+/* Botones */
+button {
+  font-weight: bold;
+  border-radius: 0.3rem;
+  /* Bordes redondeados */
+  transition: all 0.3s ease-in-out;
+  /* Animaciones suaves */
+}
+
+button:hover {
+  transform: scale(1.05);
+  /* Ampliar ligeramente al pasar el cursor */
+  background-color: rgba(43,54,114,0.13)
+  /* Cambiar el color de fondo */
+}
+
+/* Formularios */
+input,
+select,
+textarea {
+  border: 1px solid var(--color-primary-65);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-primary-90);
+  /* Resaltar en naranja */
+  box-shadow: 0 0 4px var(--color-primary-90);
+}
+
+/* ==== Utilidades ==== */
+main {
+  flex-grow: 1;
+  /* El contenido principal ocupa todo el espacio disponible */
 }

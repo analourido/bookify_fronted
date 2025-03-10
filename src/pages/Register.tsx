@@ -67,41 +67,83 @@ const Register: React.FC = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <form className="max-w-sm mx-auto min-w-sm" onSubmit={handleSubmit}>
-      <InputForm text="Nombre" name="name" value={form.name || ''} handleChange={handleChange} error={errors.name} />
-      <InputForm text="Apellidos" name="surname" value={form.surname || ''} handleChange={handleChange} error={errors.surname} />
-      <InputForm text="Email" name="email" value={form.email || ''} handleChange={handleChange} error={errors.email} />
-      <InputForm text="Password" name="password" value={form.password || ''} handleChange={handleChange} error={errors.password} />
+    <form className="max-w-sm mx-auto min-w-sm bg-[rgba(43,54,114,0.13)] p-6 rounded-lg shadow-lg" onSubmit={handleSubmit}>
+      <h2 className="text-2xl font-bold text-center text-primary-90 mb-6">Regístrate</h2>
 
+      <InputForm
+        text="Nombre"
+        name="name"
+        value={form.name || ''}
+        handleChange={handleChange}
+        error={errors.name}
+      />
+
+      <InputForm
+        text="Apellidos"
+        name="surname"
+        value={form.surname || ''}
+        handleChange={handleChange}
+        error={errors.surname}
+      />
+
+      <InputForm
+        text="Email"
+        name="email"
+        value={form.email || ''}
+        handleChange={handleChange}
+        error={errors.email}
+      />
+
+      <InputForm
+        text="Password"
+        name="password"
+        type="password" // Asegúrate de que el campo sea seguro
+        value={form.password || ''}
+        handleChange={handleChange}
+        error={errors.password}
+      />
+
+      {/* Checkbox para aceptar notificaciones */}
       <div className="flex items-start mb-5">
         <div className="flex items-center h-5">
           <input
             id="acceptNotifications"
             name="acceptNotifications"
             type="checkbox"
-            value={form.acceptNotifications ? "on" : "off"}
+            checked={form.acceptNotifications || false}
             onChange={handleChangeCheckbox}
-            className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800"
+            className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-primary-85 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-90 dark:ring-offset-gray-800"
           />
         </div>
 
         <label
-          htmlFor="remember"
-          className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+          htmlFor="acceptNotifications"
+          className="ms-2 text-sm font-medium text-primary-85 dark:text-primary-70"
         >
-          Aceptas recibir notificaciones?
+          ¿Aceptas recibir notificaciones?
         </label>
-        {errors.acceptNotifications && <p className="mt-2 text-sm text-red-600 dark:text-red-500"> {errors.acceptNotifications}</p>}
 
+        {errors.acceptNotifications && (
+          <p className="mt-2 text-sm text-red-600 dark:text-red-500">
+            {errors.acceptNotifications}
+          </p>
+        )}
       </div>
-      {errors && errors.message && <p className="text-center mt-4 text-red-500">{errors.message}</p>}
+
+      {/* Mensaje de error general */}
+      {errors && errors.message && (
+        <p className="text-center mt-4 text-red-500">{errors.message}</p>
+      )}
+
+      {/* Botón de enviar */}
       <button
         type="submit"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        className=" bg-primary-85 hover:bg-primary-90 focus:ring-4 focus:outline-none focus:ring-primary-60 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center transition-all duration-300 ease-in-out shadow-md"
       >
-        Submit
+        Registrarse
       </button>
     </form>
+
   );
 };
 

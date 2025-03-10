@@ -9,9 +9,9 @@ function CategoryForm({ onSubmit }: CategoryFormProps) {
     const [name, setName] = useState('')
     return (
         <form onSubmit={(e) => onSubmit(e, name)} className="text-white">
-            <label htmlFor="name">Nombre:</label>
+            <label className="m-2" htmlFor="name">Nombre:</label>
             <input id="name" name="name" value={name} onChange={(e) => setName(e.target.value)} />
-            <button>Guardar</button>
+            <button className="p-2 m-2">Guardar</button>
         </form>
     )
 }
@@ -24,13 +24,13 @@ function CategoryList({ categories, onDelete }: CategoryListProps) {
     return (
         <div className="text-white">
             {categories.map(category =>
-                <div key={category.id}>
-                    {category.name} -
-                    <button onClick={() => onDelete(category.id)}>Borrar</button>
+                <div className="text-primary-90" key={category.id}>
+                    {category.name}
+                    <button className="text-xs mx-5 p-1 " onClick={() => onDelete(category.id)}>Borrar</button>
                 </div>
             )}
         </div>
-    )
+    )   
 }
 
 
@@ -68,12 +68,28 @@ function CategoryManager() {
     }
 
     return (
-        <div>
-            <h1 className="text-4xl font-extrabold dark:text-white">Gestión de categorías</h1>
-            <CategoryForm onSubmit={handleCreate}></CategoryForm>
-            <CategoryList categories={categories} onDelete={handleDelete}></CategoryList>
+        <div className="min-h-screen flex items-center justify-center p-4 bg-[url('img/fondos/fondo.png')] bg-cover bg-center">
+            <div className="w-full max-w-4xl flex rounded-lg shadow-md overflow-hidden">
+                <img
+                    className="object-cover w-1/3 rounded-s-lg"
+                    src="../img/categorias4.jpg"
+                    alt="Categorías"
+                />
+                <div className="w-2/3 bg-[rgba(43,54,114,0.13)] p-8">
+                    <div className="flex flex-col justify-between leading-normal">
+                        <h5 className="mb-4 text-3xl font-extrabold text-primary-90 tracking-tight">
+                            Gestión de categorías
+                        </h5>
+                        <div className="mb-3">
+                            <CategoryForm onSubmit={handleCreate} />
+                        </div>
+                        <div>
+                            <CategoryList categories={categories} onDelete={handleDelete} />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    )
+    );
 }
-
 export default CategoryManager
