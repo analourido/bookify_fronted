@@ -1,6 +1,10 @@
 export const fetchAPI = async (endPoint: string, options = {}) => {
     try {
-        const response = await fetch(endPoint, options);
+        const response = await fetch(endPoint, {
+            ...options,
+            credentials: 'include'
+        });
+
 
         if (response.status == 401) {
             window.location.href = "/login";

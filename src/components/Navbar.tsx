@@ -114,6 +114,22 @@ function Navbar() {
                                         Libros
                                     </Link>
                                 </li>
+                                <li>
+                                    <Link
+                                        to="/clubs"
+                                        className="block py-2 px-3 text-white hover:text-primary-90 rounded-lg transition-all duration-300 ease-in-out drop-shadow-md"
+                                    >
+                                        Clubs
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
+                                        to="/suggestions"
+                                        className="block py-2 px-3 text-white hover:text-primary-90 rounded-lg transition-all duration-300 ease-in-out drop-shadow-md"
+                                    >
+                                        Sugerencias
+                                    </Link>
+                                </li>
                             </>
                         )}
                         {isAdmin && (

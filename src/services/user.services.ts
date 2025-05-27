@@ -33,4 +33,17 @@ export class UserService {
         })
     }
 
+    static async getByActive(active: boolean) {
+        if (active) {
+            return await fetchAPI(API_URL_BASE + '/users', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            })
+        }
+
+    }
+
 }

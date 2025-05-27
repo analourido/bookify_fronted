@@ -1,4 +1,5 @@
-import Review from "./Review"
+import { Review } from "./Review"
+
 
 export default interface Book {
     id: number
@@ -7,8 +8,11 @@ export default interface Book {
     genre: string
     description?: string
     publishedAt: string
+    coverUrl?: string
     idCategory?: number | null
+    canReview?: boolean
     reviews: Review[]
     idUser: number
+    averageRating?: number
 }
 

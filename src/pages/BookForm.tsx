@@ -22,6 +22,7 @@ function BookForm() {
         author: '',
         genre: '',
         description: '',
+        coverUrl: '',
         publishedAt: new Date().toISOString().slice(0, 16),
         idCategory: undefined
         // falta reviews
@@ -139,6 +140,22 @@ function BookForm() {
                             handleChange={handleChange}
                             error={errors?.genre}
                         />
+                        <InputForm
+                            text="URL de la portada"
+                            name="coverUrl"
+                            value={form.coverUrl || ''}
+                            handleChange={handleChange}
+                            error={errors?.coverUrl}
+                        />
+                        {form.coverUrl && (
+                            <div className="mt-4 text-center">
+                                <img
+                                    src={form.coverUrl}
+                                    alt="Vista previa de la portada"
+                                    className="h-40 mx-auto rounded shadow"
+                                />
+                            </div>
+                        )}
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div></div>

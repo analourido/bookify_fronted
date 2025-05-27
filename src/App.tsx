@@ -13,6 +13,13 @@ import CategoryManager from './pages/CategoryManager'
 import BookDetail from './pages/BookDetail'
 import { Toaster } from 'react-hot-toast'
 import CategoryDetail from './pages/CategoryDetail'
+import SuggestionForm from './pages/SuggestionForm'
+import SuggestionList from './pages/SuggestionList'
+import BookExplorer from './pages/BookExplorer'
+import AddReview from './pages/AddReview'
+import ClubDetail from './pages/ClubDetail'
+import ClubList from './pages/CLubList'
+import CreateClub from './pages/CreateClub'
 
 function App() {
 
@@ -33,8 +40,16 @@ function App() {
               <Route path="/books/:id" element={<BookDetail />} />
               <Route path="/books/new" element={<BookForm />} />
               <Route path="/books/edit/:id" element={<BookForm />} />
+              <Route path="/books/explorer" element={<BookExplorer />} />
               <Route path="/categories" element={<CategoryManager />} />
               <Route path="/categories/:id" element={<CategoryDetail />} />
+              <Route path="/suggestions" element={<SuggestionList />} />
+              <Route path="/suggestions/new" element={<SuggestionForm />} />
+              <Route path="/suggestions/edit/:id" element={<SuggestionForm />} />
+              <Route path="/books/:id/review" element={<AddReview />} />
+              <Route path="/clubs" element={<ClubList />} />
+              <Route path="/clubs/create" element={<CreateClub />} />
+              <Route path="/clubs/:id" element={<ClubDetail />} />
             </Routes>
           </div>
           <Footer />

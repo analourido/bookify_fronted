@@ -10,6 +10,7 @@ interface User {
   active: boolean
   acceptNotifications: boolean
 }
+
 function UserList() {
   const [users, setUsers] = useState<User[]>([])
   const [message, setMessage] = useState('')
@@ -18,12 +19,12 @@ function UserList() {
   useEffect(() => {
     async function call() {
       try {
-        console.log('Fetching users...');
+        console.log('Fetching users...')
         const userList = await UserService.getAll()
-        console.log('Users fetched:', userList);
+        console.log('Users fetched:', userList)
         setUsers(userList)
       } catch (error) {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching users:', error)
         const msg = error instanceof Error ? error.message : 'Error desconocido'
         setMessage(msg)
       } finally {
@@ -35,13 +36,14 @@ function UserList() {
 
   if (loading) return <div>Loading...</div>
 
-  console.log('Users state before rendering:', users);
+  // Filtrar usuarios activos
+  const activeUsers = users.filter(user => user.active)
 
   return (
     <div className="max-w-screen-xl mx-auto p-4">
       <div className="bg-[rgba(43,54,114,0.13)] border border-primary-65 rounded-lg shadow-md overflow-hidden">
         <h2 className="text-2xl font-bold text-primary-90 p-4">
-          Lista de Usuarios
+          Lista de Usuarios Activos
         </h2>
         {message && <p className="text-center text-red-500 py-2">{message}</p>}
         <div className="relative overflow-x-auto">
@@ -60,10 +62,13 @@ function UserList() {
                 <th scope="col" className="px-6 py-3 rounded-e-lg">
                   Rol
                 </th>
+                <th scope="col" className="px-6 py-3 rounded-e-lg">
+                  Estado
+                </th>
               </tr>
             </thead>
             <tbody>
-              {users.map(user => (
+              {activeUsers.map(user => (
                 <tr key={user.id} className="hover:bg-[rgba(43,54,114,0.05)] border-b border-primary-65">
                   <th
                     scope="row"
@@ -74,15 +79,21 @@ function UserList() {
                   <td className="px-6 py-4">{user.surname}</td>
                   <td className="px-6 py-4">{user.email}</td>
                   <td className="px-6 py-4">{user.role}</td>
+                  <td className="px-6 py-4">
+                    {user.active ? (
+                      <span className="text-green-700 font-bold">Activo</span>) :
+                      (<span className="text-red-700 font-bold">Inactivo</span>
+                      )}
+                  </td>
                 </tr>
               ))}
             </tbody>
             <tfoot className="font-semibold text-primary-90 bg-[rgba(43,54,114,0.05)]">
               <tr>
                 <th scope="row" className="px-6 py-3 text-base">
-                  Nº de usuarios
+                  Nº de usuarios activos
                 </th>
-                <td className="px-6 py-3">{users.length}</td>
+                <td className="px-6 py-3">{activeUsers.length}</td>
                 <td className="px-6 py-3"></td>
                 <td className="px-6 py-3"></td>
               </tr>
@@ -91,7 +102,7 @@ function UserList() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default UserList;
+export default UserList
