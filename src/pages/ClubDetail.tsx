@@ -35,15 +35,6 @@ function ClubDetail() {
             .finally(() => setLoading(false))
     }, [id])
 
-    const handleJoin = async () => {
-        try {
-            await ClubService.joinClub(Number(id))
-            window.location.reload()
-        } catch {
-            alert("Error al unirse al club")
-        }
-    }
-
     const handleLeave = async () => {
         try {
             await ClubService.leaveClub(Number(id))
@@ -101,7 +92,6 @@ function ClubDetail() {
                 >
                     Salir del club
                 </button>
-
             </div>
         </div>
     )
