@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { UserService } from "../services/user.services";
 import User from "../models/User";
 import { initFlowbite } from "flowbite";
+import UserHistory from "../components/UserHistory";
+import { Link } from "react-router-dom";
 
 function Profile() {
   const [user, setUser] = useState<User | null>(null);
@@ -31,6 +33,8 @@ function Profile() {
 
     fetchProfile();
   }, []);
+
+
 
   // inicialoiza Flowbite para el pop
   useEffect(() => {
@@ -117,7 +121,15 @@ function Profile() {
               </div>
             </>
           )}
+          <Link
+            to="/my-reading-lists"
+            className="mt-4 inline-block bg-primary-85 hover:bg-primary-90 text-white font-medium py-2 px-4 rounded-lg shadow transition"
+          >
+            Mis listas de lectura
+          </Link>
         </dl>
+        {user && <UserHistory />}
+
       </div>
     </div>
   );

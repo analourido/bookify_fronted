@@ -4,6 +4,7 @@ import { AuthService } from "../services/auth.services";
 const API_URL_BASE = import.meta.env.VITE_API_URL_BASE
 
 interface UserPayload {
+    clubMembers: any;
     id: number
     email: string
     role: string

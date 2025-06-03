@@ -3,18 +3,30 @@ import { fetchAPI } from "../utils/FetchAPI"
 const API_URL_BASE = import.meta.env.VITE_API_URL_BASE
 
 export class BookService {
-    static async search(title?: string, author?: string) {
-        let url = API_URL_BASE + '/books?'
-        if (title) url += 'title=' + title
-        if (author) url += 'author=' + author
+    static async search(filters: {
+        title?: string;
+        author?: string;
+        genre?: string;
+        year?: string;
+        minRating?: string;
+        sort?: string;
+    }) {
+        const params = new URLSearchParams();
+
+        if (filters.title) params.append('title', filters.title);
+        if (filters.author) params.append('author', filters.author);
+        if (filters.genre) params.append('genre', filters.genre);
+        if (filters.year) params.append('year', filters.year);
+        if (filters.minRating) params.append('minRating', filters.minRating);
+        if (filters.sort) params.append('sort', filters.sort);
+
+        const url = `${API_URL_BASE}/books?${params.toString()}`;
 
         return await fetchAPI(url, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             credentials: 'include'
-        })
+        });
     }
 
 

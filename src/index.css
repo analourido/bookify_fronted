@@ -3,26 +3,16 @@
 /* ==== Colores Personalizados ==== */
 :root {
   --color-primary-50: rgb(43, 54, 115);
-  /* Azul oscuro principal */
   --color-primary-60: rgb(0, 76, 97);
-  /* Azul profundo */
   --color-primary-65: #94808a;
-  /* Gris pálido */
   --color-primary-70: #ffe2d6;
-  /* Beige claro */
   --color-primary-80: #fbe0cf;
-  /* Crema */
   --color-primary-85: #f2cbb4;
-  /* Beige suave */
   --color-primary-90: #fac991;
-  /* Naranja */
-
-  /* Colores translúcidos */
   --color-semitransparent-light: rgba(255, 255, 255, 0.8);
-  /* Blanco translúcido */
   --color-semitransparent-dark: rgba(43, 54, 114, 0.9);
-  /* Azul oscuro translúcido */
 }
+
 
 /* ==== Estilos Globales ==== */
 body {

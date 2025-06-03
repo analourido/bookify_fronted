@@ -20,6 +20,10 @@ import AddReview from './pages/AddReview'
 import ClubDetail from './pages/ClubDetail'
 import ClubList from './pages/CLubList'
 import CreateClub from './pages/CreateClub'
+import ClubChatPage from './pages/ClubChatPage'
+import MyClubs from './pages/MyClubs'
+import MyReadingLists from './pages/MyReadingLists'
+
 
 function App() {
 
@@ -50,6 +54,10 @@ function App() {
               <Route path="/clubs" element={<ClubList />} />
               <Route path="/clubs/create" element={<CreateClub />} />
               <Route path="/clubs/:id" element={<ClubDetail />} />
+              <Route path="/clubs/:id/chat" element={<ClubChatPage />} />
+              <Route path="/my-clubs" element={<MyClubs />} />
+              <Route path="/my-reading-lists" element={<MyReadingLists />} />
+
             </Routes>
           </div>
           <Footer />

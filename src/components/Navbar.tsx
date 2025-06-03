@@ -124,6 +124,14 @@ function Navbar() {
                                 </li>
                                 <li>
                                     <Link
+                                        to="/my-clubs"
+                                        className="block py-2 px-3 text-white hover:text-primary-90 rounded-lg transition-all duration-300 ease-in-out drop-shadow-md"
+                                    >
+                                        Mis Clubs
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link
                                         to="/suggestions"
                                         className="block py-2 px-3 text-white hover:text-primary-90 rounded-lg transition-all duration-300 ease-in-out drop-shadow-md"
                                     >

@@ -20,7 +20,7 @@ function Booklist() {
 
 
     useEffect(() => {
-        BookService.search(titleAuthorQuery)
+        BookService.search({ title: titleAuthorQuery })
             .then(setBooks)
             .catch((error) => setError(error.message))
             .finally(() => setLoading(false));
