@@ -1,83 +1,89 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
-import { useAuth } from '../contexts/AuthContext'
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const navigate = useNavigate();
 
-    const [form, setForm] = useState(
-        {
-            email: '',
-            password: ''
-        }
-    )
-    const [message, setMessage] = useState('')
-    const { login } = useAuth()
+    const [form, setForm] = useState({
+        email: '',
+        password: ''
+    });
+    const [message, setMessage] = useState('');
+    const { login } = useAuth();
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault()
-        // mensaje por post al api del backend
+        e.preventDefault();
         try {
-            //await AuthService.loginUser(form.email, form.password) // backend
-            await login(form.email, form.password) // llamada al contexto
-            setMessage('login successfull')
+            await login(form.email, form.password);
+            setMessage('Inicio de sesión exitoso');
             navigate("/books");
-            // Redirigir a otra pagina (ofertas)
         } catch (error) {
-            const msg = error instanceof Error ? error.message : 'Error desconocido'
-            setMessage(msg)
+            const msg = error instanceof Error ? error.message : 'Error desconocido';
+            setMessage(msg);
         }
-    }
+    };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { value, name } = e.target
-        setForm({ ...form, [name]: value, })
-    }
+        const { value, name } = e.target;
+        setForm({ ...form, [name]: value });
+    };
 
     return (
-        <div className=" flex items-center justify-center p-4 bg-[url('img/fondos/fondo.png')] bg-cover bg-center">
-            <form className="w-full max-w-md bg-[rgba(43,54,114,0.13)] rounded-lg shadow-md p-8" onSubmit={handleSubmit}>
-                <h2 className="text-3xl font-extrabold text-primary-90 mb-6 text-center">
-                    Iniciar Sesión
-                </h2>
-                <div className="mb-5">
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-primary-70">
-                        Tu correo electrónico
-                    </label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={form.email}
-                        onChange={handleChange}
-                        id="email"
-                        className="bg-[rgba(43,54,114,0.13)] border border-primary-65 text-primary-85 text-sm rounded-lg focus:ring-primary-85 focus:border-primary-85 block w-full p-2.5 transition-all duration-300 ease-in-out"
-                        placeholder="nombre@ejemplo.com"
-                        required
-                    />
+        <div className="hero bg-base-200 min-h-screen">
+            <div className="hero-content flex-col lg:flex-row-reverse">
+                <div className="text-center lg:text-left">
+                    <h1 className="text-5xl font-bold text-primary">¡Inicia Sesión Ahora!</h1>
+                    <p className="py-6 text-primary-70">
+                        Accede a tu cuenta y descubre nuevas lecturas. Conéctate con otros lectores y disfruta de Bookify.
+                    </p>
                 </div>
-                <div className="mb-5">
-                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-primary-70">
-                        Tu contraseña
-                    </label>
-                    <input
-                        type="password"
-                        name="password"
-                        value={form.password}
-                        onChange={handleChange}
-                        id="password"
-                        className="bg-[rgba(43,54,114,0.13)] border border-primary-65 text-primary-85 text-sm rounded-lg focus:ring-primary-85 focus:border-primary-85 block w-full p-2.5 transition-all duration-300 ease-in-out"
-                        required
-                    />
-                </div>
+                <div className="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+                    <div className="card-body">
+                        <form onSubmit={handleSubmit}>
+                            <fieldset className="fieldset">
+                                <label className="label" htmlFor="email">Correo electrónico</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={form.email}
+                                    onChange={handleChange}
+                                    placeholder="nombre@ejemplo.com"
+                                    className="input input-bordered w-full"
+                                    required
+                                />
 
-                <button
-                    type="submit"
-                    className="text-white bg-primary-85 hover:bg-primary-90 focus:ring-4 focus:outline-none focus:ring-primary-70 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-all duration-300 ease-in-out shadow-md"
-                >
-                    Iniciar Sesión
-                </button>
-                {message && <div className="mt-4 text-center text-red-500">{message}</div>}
-            </form>
+                                <label className="label mt-4" htmlFor="password">Contraseña</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    value={form.password}
+                                    onChange={handleChange}
+                                    placeholder="Tu contraseña"
+                                    className="input input-bordered w-full"
+                                    required
+                                />
+
+                                <div className="mt-2">
+                                    <a className="link link-hover text-primary-70">¿Olvidaste tu contraseña?</a>
+                                </div>
+
+                                <button type="submit" className="btn btn-primary mt-4 w-full">
+                                    Iniciar Sesión
+                                </button>
+
+                                {message && (
+                                    <div className="mt-4 text-center text-error">
+                                        {message}
+                                    </div>
+                                )}
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

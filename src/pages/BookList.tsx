@@ -6,18 +6,16 @@ import toast from "react-hot-toast";
 import { useAuth } from "../contexts/AuthContext";
 
 function Booklist() {
-    const { isAdmin } = useAuth()
+    const { isAdmin } = useAuth();
     const [books, setBooks] = useState<Books[]>();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
-    //const [titleQuery, setTitleQuery] = useState(null)
 
     const [queryParams, setQueryParams] = useSearchParams();
     const titleAuthorQuery = queryParams.get("title") || "";
+
     const truncate = (text: string, maxWords = 15) =>
-        text.split(" ").slice(0, maxWords).join(" ") + (text.split(" ").length > maxWords ? "..." : "")
-
-
+        text.split(" ").slice(0, maxWords).join(" ") + (text.split(" ").length > maxWords ? "..." : "");
 
     useEffect(() => {
         BookService.search({ title: titleAuthorQuery })
@@ -32,8 +30,7 @@ function Booklist() {
     };
 
     const handleDelete = async (id: number) => {
-        if (!window.confirm("¿Estás seguro que quieres borrar este libro?"))
-            return;
+        if (!window.confirm("¿Estás seguro que quieres borrar este libro?")) return;
 
         try {
             await BookService.delete(id);
@@ -45,93 +42,82 @@ function Booklist() {
     };
 
     return (
-        <div className="w-full m-5  bg-[rgba(43,54,114,0.13)] rounded-lg shadow-md">
-            <div id="defaultTabContent">
-                <div className="p-4 rounded-lg md:p-8" id="about" role="tabpanel" aria-labelledby="about-tab">
-                    <div className="flex flex-col gap-4">
-                        <h2 className="text-2xl font-extrabold text-primary-90">
-                            Lista de libros
-                        </h2>
-                        <Link
-                            to="/books/new"
-                            className="inline-block text-white bg-primary-85  hover:bg-primary-90 focus:ring-4 focus:outline-none focus:ring-primary-70 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 ease-in-out shadow-md w-fit"
-                        >
-                            Añadir nuevo libro
-                        </Link>
-                        <Link
-                            to="/books/explorer"
-                            className="inline-block text-primary-85 border border-primary-70 hover:bg-primary-65 hover:text-white font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 ease-in-out shadow-md w-fit"
-                        >
-                            Buscar libros en Open Library
-                        </Link>
+        <div className="max-w-6xl mx-auto p-4">
+            <h2 className="text-3xl font-bold text-primary mb-4">Lista de Libros</h2>
 
+            <div className="flex flex-col md:flex-row gap-4 mb-4">
+                <input
+                    type="text"
+                    className="input input-bordered w-full md:w-1/2"
+                    value={titleAuthorQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Buscar por título o autor"
+                />
+                <div className="flex gap-2">
+                    <Link
+                        to="/books/new"
+                        className="btn btn-primary"
+                    >
+                        Añadir Nuevo
+                    </Link>
+                    <Link
+                        to="/books/explorer"
+                        className="btn btn-secondary"
+                    >
+                        Buscar en Open Library
+                    </Link>
+                </div>
+            </div>
 
-                        <div className="relative">
-                            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                            </div>
-                            <input
-                                className="block w-full p-4 ps-10 text-sm text-primary-85 border border-primary-65 rounded-lg bg-[rgba(43,54,114,0.13)] focus:ring-primary-85 focus:border-primary-85 transition-all duration-300 ease-in-out"
-                                value={titleAuthorQuery}
-                                onChange={handleSearchChange}
-                                placeholder="Buscar por título o autor"
-                            />
-                        </div>
+            {loading && <p className="text-primary">Cargando...</p>}
+            {error && <p className="text-error">Error: {error}</p>}
+            {books?.length === 0 && <p className="text-primary">No hay libros disponibles.</p>}
 
-                        {loading && <p className="text-primary-70">Cargando...</p>}
-                        {error && <p className="text-red-500">Error: {error}</p>}
-                        {books?.length === 0 && <p className="text-primary-70">No hay libros disponibles</p>}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {books?.map((book) => (
+                    <div key={book.id} className="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                        {book.coverUrl && (
+                            <figure className="p-4">
+                                <img
+                                    src={book.coverUrl || 'img/placeholder.png'}
+                                    alt={`Portada de ${book.title}` || 'img/placeholder.png'}
+                                    className="h-60 w-full object-contain p-2 bg-base-200 rounded-md"
+                                />
+                            </figure>
+                        )}
+                        <div className="card-body">
+                            <h3 className="card-title text-primary">
+                                {book.title}
+                            </h3>
+                            <p className="text-primary-70">{truncate(book.description || "")}</p>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            {books?.map((book) => (
-                                <div key={book.id} className="">
-                                    <div className="block p-6 bg-[rgba(43,54,114,0.13)] rounded-lg shadow-md transition-all duration-300 ease-in-out">
-                                        {book.coverUrl && (
-                                            <div className="mb-4 flex justify-center">
-                                                <img
-                                                    src={book.coverUrl}
-                                                    alt={`Portada de ${book.title}`}
-                                                    className="h-48 object-cover rounded"
-                                                />
-                                            </div>
-                                        )}
-                                        <h5 className="mb-2 text-2xl font-bold tracking-tight text-primary-90">
-                                            {book.title}
-                                        </h5>
-                                        <p className="font-normal text-primary-85">
-                                            {truncate(book.description || "")}
-                                        </p>
-
-                                        <div className="flex items-center justify-center gap-4 mt-4">
-                                            <Link
-                                                className="px-3 py-2 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
-                                                to={`/books/${book.id}`}
-                                            >
-                                                Ver
-                                            </Link>
-                                            {isAdmin && (
-                                                <>
-                                                    <Link
-                                                        className="px-3 py-2 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
-                                                        to={`/books/edit/${book.id}`}
-                                                    >
-                                                        Editar
-                                                    </Link>
-
-                                                    <button
-                                                        className="px-3 py-2 text-sm font-medium text-center text-white bg-primary-85 hover:bg-primary-90 rounded-lg transition-all duration-300 ease-in-out shadow-md"
-                                                        onClick={() => handleDelete(book.id)}
-                                                    >
-                                                        Borrar
-                                                    </button>
-                                                </>
-                                            )}
-                                        </div>
+                            <div className="flex justify-between items-center mt-2">
+                                <Link
+                                    className="btn btn-primary btn-sm"
+                                    to={`/books/${book.id}`}
+                                >
+                                    Ver
+                                </Link>
+                                {isAdmin && (
+                                    <div className="flex gap-2">
+                                        <Link
+                                            className="btn btn-secondary btn-sm"
+                                            to={`/books/edit/${book.id}`}
+                                        >
+                                            Editar
+                                        </Link>
+                                        <button
+                                            className="btn btn-error btn-sm"
+                                            onClick={() => handleDelete(book.id)}
+                                        >
+                                            Borrar
+                                        </button>
                                     </div>
-                                </div>
-                            ))}
+                                )}
+                            </div>
                         </div>
                     </div>
-                </div>
+                ))}
             </div>
         </div>
     );

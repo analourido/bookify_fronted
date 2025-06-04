@@ -1,37 +1,53 @@
 import React from 'react'
+
 interface InputFormProps {
   text: string
   name: string
   value?: string
-  checked?: boolean
   placeholder?: string
-  type?: string
   rows?: number
   handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
   error: string | undefined
+  bubbleColor?: string // Añadido para permitir cambiar el color de la burbuja (opcional)
 }
-function TextAreaInputForm({ text, name, value, handleChange, error, placeholder = '', rows = 5 }: InputFormProps) {
+
+function TextAreaInputForm({
+  text,
+  name,
+  value,
+  handleChange,
+  error,
+  placeholder = '',
+  rows = 5,
+  bubbleColor = 'primary', // por defecto 'primary'
+}: InputFormProps) {
   return (
-    <div className="mb-5">
+    <div className="chat chat-start w-full bg-primary">
+      {/* Etiqueta (como título arriba) */}
       <label
         htmlFor={name}
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        className="block mb-1 text-sm font-semibold text-primary-content"
       >
         {text}
       </label>
-      <textarea
-        value={value}
-        onChange={handleChange}
-        name={name}
-        rows={rows}
-        id={name}
-        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        placeholder={placeholder}
-      />
-      {error && <p className="mt-2 text-sm text-red-600 dark:text-red-500"> {error}</p>}
-
+      {/* Burbuja de chat con textarea */}
+      <div className={`chat-bubble chat-bubble-${bubbleColor} w-full`}>
+        <textarea
+          value={value}
+          onChange={handleChange}
+          name={name}
+          rows={rows}
+          id={name}
+          className="w-full bg-transparent border-none text-base-100 focus:outline-none resize-none"
+          placeholder={placeholder}
+        />
+      </div>
+      {error && (
+        <p className="mt-1 text-sm text-error-content">
+          {error}
+        </p>
+      )}
     </div>
-
   )
 }
 

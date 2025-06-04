@@ -30,10 +30,10 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <div className="flex flex-col  h-screen ">
+        <div className="min-h-screen flex flex-col ">
           <Navbar />
           <Toaster position="top-center" reverseOrder={false} />
-          <div className="flex grow justify-center items-center">
+          <div className="">
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />

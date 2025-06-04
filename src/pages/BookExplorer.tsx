@@ -1,108 +1,145 @@
-import { useState } from 'react'
-import axios from 'axios'
-import { useAuth } from '../contexts/AuthContext'
-import { useNavigate } from 'react-router-dom'
-import toast from 'react-hot-toast'
+import { useState } from 'react';
+import axios from 'axios';
+import { useAuth } from '../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 interface ExternalBook {
-    title: string
-    author: string
-    publishedAt: number
-    coverUrl: string | null
-    isbn: string | null
-    genre: string
-    description: string
+    title: string;
+    author: string;
+    publishedAt: number;
+    coverUrl: string | null;
+    isbn: string | null;
+    genre: string;
+    description: string;
 }
 
 export default function BookExplorer() {
-    const [query, setQuery] = useState('')
-    const [results, setResults] = useState<ExternalBook[]>([])
-    const [loading, setLoading] = useState(false)
-    useAuth()
-    const truncate = (text: string, maxWords = 30) =>
-        text.split(" ").slice(0, maxWords).join(" ") + (text.split(" ").length > maxWords ? "..." : "")
+    const [query, setQuery] = useState('');
+    const [results, setResults] = useState<ExternalBook[]>([]);
+    const [loading, setLoading] = useState(false);
+    useAuth();
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    const truncate = (text: string, maxWords = 30) =>
+        text.split(' ').slice(0, maxWords).join(' ') +
+        (text.split(' ').length > maxWords ? '...' : '');
 
     const handleSearch = async () => {
-        if (!query) return
-        setLoading(true)
-        try {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL_BASE}/external-books/search?title=${encodeURIComponent(query)}`, {
-                withCredentials: true
-            })
-
-            const books: ExternalBook[] = Array.isArray(res.data) ? res.data : []
-            setResults(books)
-        } catch (err) {
-            toast.error('Error al buscar libros')
-            console.error('Error al buscar libros', err)
-        } finally {
-            setLoading(false)
+        if (!query) {
+            toast.error('Por favor ingresa un título');
+            return;
         }
-    }
+        setLoading(true);
+        try {
+            const res = await axios.get(
+                `${import.meta.env.VITE_API_URL_BASE}/external-books/search?title=${encodeURIComponent(query)}`,
+                {
+                    withCredentials: true,
+                }
+            );
+            const books: ExternalBook[] = Array.isArray(res.data) ? res.data : [];
+            setResults(books);
+            if (books.length === 0) toast('No se encontraron resultados.');
+        } catch (err) {
+            toast.error('Error al buscar libros');
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleImport = async (book: ExternalBook) => {
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL_BASE}/books/import`, {
-                ...book,
-                genre: book.genre || 'General',
-                description: book.description || 'Sin descripción',
-                coverUrl: book.coverUrl,
-            }, {
-                withCredentials: true
-            })
-            toast.success(`Libro "${book.title}" importado correctamente`)
-            navigate('/books')
+            await axios.post(
+                `${import.meta.env.VITE_API_URL_BASE}/books/import`,
+                {
+                    ...book,
+                    genre: book.genre || 'General',
+                    description: book.description || 'Sin descripción',
+                    coverUrl: book.coverUrl,
+                },
+                {
+                    withCredentials: true,
+                }
+            );
+            toast.success(`Libro "${book.title}" importado correctamente`);
+            navigate('/books');
         } catch (err) {
-            toast.error('Error al importar el libro')
-            console.error(err)
+            toast.error('Error al importar el libro');
+            console.error(err);
         }
-    }
+    };
 
     return (
-        <div className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Explorar libros (Open Library)</h2>
-            <div className="flex gap-2 mb-4">
-                <input
-                    type="text"
-                    placeholder="Buscar por título"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    className="border px-3 py-2 rounded w-full"
-                />
-                <button
-                    onClick={handleSearch}
-                    className="bg-blue-600 text-white px-4 py-2 rounded"
-                >Buscar</button>
+        <div className="max-w-6xl mx-auto p-4">
+            <div className="mb-8 text-center">
+                <h2 className="text-4xl font-extrabold text-primary mb-2">
+                    Explorar libros
+                </h2>
+                <p className="text-primary-70">
+                    Busca títulos y descubre nuevas lecturas.
+                </p>
             </div>
 
-            {loading && <p>Buscando libros...</p>}
+            <div className="flex flex-col md:flex-row items-center gap-4 mb-8 justify-center">
+                <input
+                    type="text"
+                    placeholder="Buscar por título..."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    className="input input-bordered w-full md:w-1/2"
+                />
+                <button onClick={handleSearch} className="btn btn-primary">
+                    Buscar
+                </button>
+            </div>
 
-            <ul className="space-y-4">
+            {loading && (
+                <div className="flex justify-center my-10">
+                    <span className="loading loading-bars loading-lg text-primary"></span>
+                </div>
+            )}
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {results.map((book, index) => (
-                    <li key={index} className="border rounded p-4 flex gap-4">
-                        {book.coverUrl && (
+                    <div key={index} className="card bg-base-100 shadow-lg hover:shadow-xl transition">
+                        <figure>
                             <img
-                                src={book.coverUrl}
+                                src={book.coverUrl || 'img/placeholder.png'}
                                 alt={book.title}
-                                className="w-24 h-auto object-cover"
+                                className="h-60 w-full object-contain p-2 bg-base-200 rounded-md"
                             />
-                        )}
-                        <div className="flex-1">
-                            <h3 className="text-lg font-bold">{book.title}</h3>
-                            <p>Autor: {book.author}</p>
-                            <p>Año: {book.publishedAt}</p>
-                            <p>Género: {book.genre}</p>
-                            <p className="text-sm text-gray-600">{truncate(book.description)}</p>
-                            <button
-                                onClick={() => handleImport(book)}
-                                className="mt-2 bg-green-600 text-white px-3 py-1 rounded"
-                            >Importar</button>
+                        </figure>
+                        <div className="card-body">
+                            <h3 className="card-title text-primary">{book.title}</h3>
+                            <p className="text-primary-85">
+                                <span className="font-semibold">Autor:</span> {book.author}
+                            </p>
+                            <p className="text-primary-85">
+                                <span className="font-semibold">Año:</span> {book.publishedAt}
+                            </p>
+                            {book.genre && (
+                                <div className="badge badge-secondary mb-2">
+                                    {book.genre}
+                                </div>
+                            )}
+                            <p className="text-sm text-primary-70">
+                                {truncate(book.description)}
+                            </p>
+                            <div className="card-actions justify-end mt-4">
+                                <button
+                                    onClick={() => handleImport(book)}
+                                    className="btn btn-success btn-sm"
+                                >
+                                    Importar
+                                </button>
+                            </div>
                         </div>
-                    </li>
+                    </div>
+
                 ))}
-            </ul>
+            </div>
         </div>
-    )
+    );
 }
