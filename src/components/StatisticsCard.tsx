@@ -26,7 +26,7 @@ function GlobalStatistics() {
 
     return (
         <div className="flex justify-center mt-8">
-            <div className="stats stats-vertical md:stats-horizontal shadow-lg bg-base-100 w-full max-w-4xl rounded-box">
+            <div className="stats stats-vertical md:stats-horizontal bg-base-100 w-full max-w-4xl rounded-box">
                 <div className="stat text-center">
                     <div className="stat-title text-lg">Usuarios registrados</div>
                     <div className="stat-value text-primary">{stats.totalUsers ?? "N/A"}</div>

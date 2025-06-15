@@ -23,7 +23,9 @@ import CreateClub from './pages/CreateClub'
 import ClubChatPage from './pages/ClubChatPage'
 import MyClubs from './pages/MyClubs'
 import MyReadingLists from './pages/MyReadingLists'
-
+import About from './pages/About'
+import TermsAndConditions from './pages/TermsAndConditions'
+import ThanksPage from './pages/ThanksPage'
 
 function App() {
 
@@ -57,6 +59,9 @@ function App() {
               <Route path="/clubs/:id/chat" element={<ClubChatPage />} />
               <Route path="/my-clubs" element={<MyClubs />} />
               <Route path="/my-reading-lists" element={<MyReadingLists />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/terms" element={<TermsAndConditions />} />
+              <Route path="/gracias" element={<ThanksPage />} />
 
             </Routes>
           </div>

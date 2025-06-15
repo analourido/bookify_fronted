@@ -84,74 +84,77 @@ function MyReadingLists() {
     };
 
     return (
-        <div className="max-w-3xl mx-auto mt-8 p-6 bg-white shadow rounded-lg">
-            <h1 className="text-3xl font-bold text-primary-90 mb-4">📚 Mis listas de lectura</h1>
+        <div className="max-w-5xl mx-auto px-4 py-10">
+            <div className="mb-10">
+                <h1 className="text-3xl font-bold text-primary mb-2">Mis listas de lectura</h1>
+                <p className="text-primary-70">Organiza tus libros en listas personalizadas según tus intereses o categorías.</p>
+            </div>
 
             {/* Crear lista */}
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex flex-col md:flex-row items-center gap-4 mb-8">
                 <input
                     type="text"
                     placeholder="Nombre de la nueva lista"
                     value={newListName}
                     onChange={(e) => setNewListName(e.target.value)}
-                    className="flex-1 border border-primary-65 rounded px-3 py-2"
+                    className="input input-bordered w-full md:w-2/3"
                 />
-                <button
-                    onClick={handleCreateList}
-                    className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-                >
-                    Crear
+                <button onClick={handleCreateList} className="btn btn-primary">
+                    Crear Lista
                 </button>
             </div>
 
             {/* Mensajes */}
             {loading && <p className="text-primary-70">Cargando listas...</p>}
-            {error && <p className="text-red-500">{error}</p>}
-            {lists.length === 0 && !loading && (
-                <p className="text-primary-70">Aún no tienes listas de lectura.</p>
+            {error && <p className="text-error">{error}</p>}
+            {!loading && lists.length === 0 && (
+                <p className="text-primary-70">Aún no tienes listas creadas.</p>
             )}
 
             {/* Listado */}
-            <ul className="space-y-4">
+            <div className="grid gap-6">
                 {lists.map((list) => (
-                    <li key={list.id} className="border rounded p-4">
-                        <div className="flex justify-between items-center">
+                    <div
+                        key={list.id}
+                        className="bg-base-100 border border-primary-20 rounded-lg shadow-sm p-6"
+                    >
+                        <div className="flex justify-between items-start mb-4">
                             <div>
-                                <h3 className="text-lg font-bold text-primary-85">{list.name}</h3>
-                                <p className="text-sm text-primary-70">
-                                    Libros: {list.books.length}
-                                </p>
+                                <h3 className="text-xl font-semibold text-primary">{list.name}</h3>
+                                <p className="text-sm text-primary-60">Total de libros: {list.books.length}</p>
                             </div>
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => handleUpdateList(list.id, list.name)}
-                                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                                    className="btn btn-outline btn-sm"
                                 >
-                                    Editar
+                                    Renombrar
                                 </button>
                                 <button
                                     onClick={() => handleDeleteList(list.id)}
-                                    className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                                    className="btn btn-outline btn-sm btn-error"
                                 >
                                     Eliminar
                                 </button>
                             </div>
                         </div>
-                        {/* Libros de la lista */}
-                        {list.books.length > 0 && (
-                            <ul className="mt-2 list-disc list-inside text-primary-70">
+
+                        {list.books.length > 0 ? (
+                            <ul className="list-disc pl-5 space-y-1 text-primary-80">
                                 {list.books.map((b) => (
                                     <li key={b.book.id}>
-                                        <Link to={`/books/${b.book.id}`} className="hover:underline">
+                                        <Link to={`/books/${b.book.id}`} className="hover:underline text-primary">
                                             {b.book.title}
                                         </Link>
                                     </li>
                                 ))}
                             </ul>
+                        ) : (
+                            <p className="text-sm text-primary-60 italic">No hay libros en esta lista.</p>
                         )}
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }

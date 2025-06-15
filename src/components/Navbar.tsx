@@ -36,25 +36,84 @@ function Navbar() {
                         Bookify
                     </span>
                 </Link>
-                <div className="flex-none">
-                    <select
-                        className="select select-bordered w-full max-w-xs"
-                        onChange={(e) => {
-                            const theme = e.target.value;
-                            document.documentElement.setAttribute("data-theme", theme);
-                        }}
-                    >
-                        <option value="retro">Retro</option>
-                        <option value="dark">Dark</option>
-                        <option value="cupcake">Cupcake</option>
-                        <option value="valentine">Valentine</option>
-                        <option value="synthwave">Synthwave</option>
-                        <option value="cyberpunk">Cyberpunk</option>
-                        <option value="halloween">Halloween</option>
-                        <option value="forest">Forest</option>
-                        <option value="luxury">Luxury</option>
-                        <option value="coffee">Coffee</option>
-                    </select>
+                <div className="dropdown">
+                    <div tabIndex={0} role="button" className="btn m-1">
+                        Theme
+                        <svg
+                            width="12px"
+                            height="12px"
+                            className="inline-block h-2 w-2 fill-current opacity-60"
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 2048 2048">
+                            <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
+                        </svg>
+                    </div>
+                    <ul tabIndex={0} className="dropdown-content bg-base-300 rounded-box z-1 w-52 p-2 shadow-2xl">
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Default"
+                                value="default" />
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Pastel"
+                                value="pastel" />
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Cyberpunk"
+                                value="cyberpunk" />
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Valentine"
+                                value="valentine" />
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Autumn"
+                                value="autumn" />
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Dracula"
+                                value="dracula" />
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Garden"
+                                value="garden" />
+                        </li>
+                        <li>
+                            <input
+                                type="radio"
+                                name="theme-dropdown"
+                                className="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
+                                aria-label="Wireframe"
+                                value="wireframe" />
+                        </li>
+                    </ul>
                 </div>
                 <div className="flex items-center md:order-2 space-x-3">
                     {!isAuthenticated && (
@@ -150,14 +209,14 @@ function Navbar() {
                                         Mis Clubs
                                     </Link>
                                 </li>
-                                <li>
+                                {  /*<li>
                                     <Link
                                         to="/suggestions"
                                         className="block py-2 px-3  hover:text-primary-90 rounded-lg transition-all duration-300 ease-in-out drop-shadow-md"
                                     >
                                         Sugerencias
                                     </Link>
-                                </li>
+                                </li>*/}
                             </>
                         )}
                         {isAdmin && (

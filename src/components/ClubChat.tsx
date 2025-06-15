@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { ClubService } from "../services/club.service";
 import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface ClubChatProps {
   clubId: number;
@@ -16,6 +17,7 @@ interface ClubMessage {
 
 function ClubChat({ clubId }: ClubChatProps) {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<ClubMessage[]>([]);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
@@ -66,33 +68,32 @@ function ClubChat({ clubId }: ClubChatProps) {
       {/* Mensajes */}
       <div className="flex-1 overflow-y-auto bg-base-100 rounded-lg p-4 mb-4 border">
         {messages.length ? (
-          messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`chat ${
-                msg.user.id === user?.id ? "chat-end" : "chat-start"
-              }`}
-            >
+          messages.map((msg) => {
+            const isOwn = msg.user.id === user?.id;
+            return (
               <div
-                className={`chat-bubble ${
-                  msg.user.id === user?.id
-                    ? "chat-bubble-primary"
-                    : "chat-bubble-secondary"
-                }`}
+                key={msg.id}
+                className={`chat ${isOwn ? "chat-end" : "chat-start"}`}
               >
-                <div className="font-semibold">{msg.user.name}</div>
-                <div className="text-xs opacity-70">
-                  {new Date(msg.createdAt).toLocaleString()}
+                <div
+                  className={`chat-bubble ${isOwn ? "chat-bubble-primary text-white" : "chat-bubble-secondary"
+                    }`}
+                >
+                  {!isOwn && (
+                    <div className="font-semibold">{msg.user.name}</div>
+                  )}
+                  <div className="text-xs opacity-70">
+                    {new Date(msg.createdAt).toLocaleString()}
+                  </div>
+                  <p>{msg.message}</p>
                 </div>
-                <p>{msg.message}</p>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
-          <p className="text-primary-70 text-center">
-            No hay mensajes aún.
-          </p>
+          <p className="text-primary-70 text-center">No hay mensajes aún.</p>
         )}
+
       </div>
 
       {/* Input */}
@@ -119,6 +120,15 @@ function ClubChat({ clubId }: ClubChatProps) {
           )}
         </button>
       </div>
+      <div className=" p-4 ">
+        <button
+          onClick={() => navigate(`/clubs/${clubId}`)}
+          className="btn btn-outline btn-sm"
+        >
+          ← Volver
+        </button>
+      </div>
+
     </div>
   );
 }

@@ -33,7 +33,7 @@ function Login() {
         <div className="hero bg-base-200 min-h-screen">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <div className="text-center lg:text-left">
-                    <h1 className="text-5xl font-bold text-primary">¡Inicia Sesión Ahora!</h1>
+                    <h1 className="text-5xl font-bold text-primary-90">¡Inicia Sesión Ahora!</h1>
                     <p className="py-6 text-primary-70">
                         Accede a tu cuenta y descubre nuevas lecturas. Conéctate con otros lectores y disfruta de Bookify.
                     </p>

@@ -35,9 +35,15 @@ function ClubList() {
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
-      setClubs(data);
-    } catch  {
-      setError("Error al cargar los clubes");
+
+      // Filtrar clubs creados por el usuario autenticado
+      const filteredClubs = user
+        ? data.filter((club: Club) => club.admin.id !== user.id)
+        : data;
+
+      setClubs(filteredClubs);
+    } catch {
+      setError("Error al cargar los clubs");
     } finally {
       setLoading(false);
     }
@@ -53,70 +59,81 @@ function ClubList() {
     try {
       await ClubService.joinClub(clubId);
       toast.success("Te has unido al club correctamente");
-      loadClubs(searchQuery); // Refrescamos la lista filtrada
+      loadClubs(searchQuery);
     } catch {
       toast.error("Error al unirse al club");
     }
   };
 
-  if (loading) return <div className="text-center mt-8">Cargando clubs...</div>;
-  if (error) return <div className="text-center text-red-700">{error}</div>;
-
   return (
-    <div className="max-w-screen-lg mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-primary-90">Clubs de lectura</h2>
-        <Link
-          to="/clubs/create"
-          className="bg-red-85 hover:bg-red-90 text-white font-semibold py-2 px-4 rounded shadow transition"
-        >
-          + Crear club
-        </Link>
-      </div>
+    <div className="max-w-6xl mx-auto p-4">
+      <h2 className="text-3xl font-bold text-primary mb-4">Lista de Clubs</h2>
 
-      <div className="mb-4">
+      <div className="flex flex-col md:flex-row gap-4 mb-4">
         <input
           type="text"
+          className="input input-bordered w-full md:w-1/2"
           placeholder="Buscar por nombre o creador"
           value={searchQuery}
           onChange={handleSearchChange}
-          className="w-full p-2 border border-primary-65 rounded"
         />
+        <div className="flex gap-2">
+          <Link
+            to="/clubs/create"
+            className="btn btn-primary"
+          >
+            + Crear club
+          </Link>
+        </div>
       </div>
 
-      <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
+      {loading && <p className="text-primary">Cargando...</p>}
+      {error && <p className="text-error">Error: {error}</p>}
+      {clubs.length === 0 && !loading && (
+        <p className="text-primary">No hay clubs disponibles.</p>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {clubs.map((club) => (
-          <div
-            key={club.id}
-            className="block bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition"
-          >
-            <Link to={`/clubs/${club.id}`}>
-              <h3 className="text-xl font-semibold text-primary-85 mb-2">
-                {club.name}
-              </h3>
-              <p className="text-primary-70 text-sm">
-                {club.description}
+          <div key={club.id} className="card bg-base-100 shadow-lg hover:shadow-xl transition">
+            <div className="card-body">
+              <h3 className="card-title text-primary">{club.name}</h3>
+              <p className="text-primary-70">
+                {club.description ? truncate(club.description, 20) : "Sin descripción"}
               </p>
-              <p className="text-primary-60 text-xs mt-2">
+              <p className="text-primary-60 text-sm mt-1">
                 Creado por: {club.admin.name}
               </p>
               <p className="text-primary-60 text-xs mt-1">
                 {new Date(club.createdAt).toLocaleDateString()}
               </p>
-            </Link>
-            {user && club.admin.id !== user.id && (
-              <button
-                onClick={() => handleJoinClub(club.id)}
-                className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow"
-              >
-                Unirse al club
-              </button>
-            )}
+              <div className="flex justify-between items-center mt-4">
+                <Link
+                  className="btn btn-primary btn-sm"
+                  to={`/clubs/${club.id}`}
+                >
+                  Ver detalles
+                </Link>
+                {user && (
+                  <button
+                    className="btn btn-success btn-sm"
+                    onClick={() => handleJoinClub(club.id)}
+                  >
+                    Unirse
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
+
+  function truncate(text: string, maxWords = 20) {
+    const words = text.split(" ");
+    return words.slice(0, maxWords).join(" ") + (words.length > maxWords ? "..." : "");
+  }
 }
 
 export default ClubList;

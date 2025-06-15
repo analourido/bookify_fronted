@@ -1,47 +1,59 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { fetchAPI } from "../utils/FetchAPI"
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchAPI } from "../utils/FetchAPI";
 
 function CreateClub() {
-    const [name, setName] = useState("")
-    const [description, setDescription] = useState("")
-    const [error, setError] = useState<string | null>(null)
-    const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
+    const [name, setName] = useState("");
+    const [description, setDescription] = useState("");
+    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-        setLoading(true)
-        setError(null)
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
 
         try {
-            const response = await fetchAPI(import.meta.env.VITE_API_URL_BASE + "/clubs", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({ name, description })
-            })
+            const response = await fetchAPI(
+                import.meta.env.VITE_API_URL_BASE + "/clubs",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ name, description }),
+                }
+            );
 
-            if (!response.id) throw new Error("Error al crear el club")
-            navigate(`/clubs/${response.id}`)
+            if (!response.id) throw new Error("Error al crear el club");
+            navigate(`/clubs/${response.id}`);
         } catch (err: unknown) {
             if (err instanceof Error) {
-                setError(err.message || "Error inesperado")
+                setError(err.message || "Error inesperado");
             } else {
-                setError("Error inesperado")
+                setError("Error inesperado");
             }
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
     return (
-        <div className="max-w-xl mx-auto p-6 bg-white rounded-lg shadow mt-10">
-            <h2 className="text-2xl font-bold mb-4 text-primary-90">Crear nuevo club</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-primary-85">
-                        Nombre del club
+        <div className="max-w-3xl mx-auto p-6 space-y-6">
+            <h2 className="text-3xl font-bold text-primary-90 mb-4">
+                Crear Nuevo Club
+            </h2>
+
+            <form
+                onSubmit={handleSubmit}
+                className="bg-base-100 shadow-lg rounded-lg p-6 border border-primary-60 hover:shadow-xl transition-all"
+            >
+                <div className="mb-4">
+                    <label
+                        htmlFor="name"
+                        className="block text-primary-85 font-semibold mb-1"
+                    >
+                        Nombre del Club:
                     </label>
                     <input
                         id="name"
@@ -49,33 +61,45 @@ function CreateClub() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         required
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+                        placeholder="Escribe el nombre del club"
+                        className="w-full input input-bordered"
                     />
                 </div>
-                <div>
-                    <label htmlFor="description" className="block text-sm font-medium text-primary-85">
-                        Descripción
+
+                <div className="mb-4">
+                    <label
+                        htmlFor="description"
+                        className="block text-primary-85 font-semibold mb-1"
+                    >
+                        Descripción:
                     </label>
                     <textarea
                         id="description"
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                         required
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
                         rows={4}
+                        placeholder="Describe brevemente el club..."
+                        className="w-full textarea textarea-bordered"
                     />
                 </div>
-                {error && <div className="text-red-600">{error}</div>}
+
+                {error && (
+                    <div className="text-error font-medium mb-2">
+                        ⚠️ {error}
+                    </div>
+                )}
+
                 <button
                     type="submit"
                     disabled={loading}
-                    className="bg-red-85 hover:bg-red-90 text-white font-semibold py-2 px-4 rounded shadow transition"
+                    className="btn btn-primary w-full"
                 >
-                    {loading ? "Creando..." : "Crear club"}
+                    {loading ? "Creando..." : "Crear Club"}
                 </button>
             </form>
         </div>
-    )
+    );
 }
 
-export default CreateClub
+export default CreateClub;

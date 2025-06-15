@@ -9,6 +9,6 @@ export default {
     },
     plugins: [require("daisyui")],
     daisyui: {
-        themes: ["retro", "dark", "cupcake"], // retro como tema predeterminado
+        themes: ["retro", "dracula", "cupcake"], // retro como tema predeterminado
     },
 };

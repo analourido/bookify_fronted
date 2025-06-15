@@ -24,7 +24,7 @@ function InputForm({
             {/* Etiqueta */}
             <label
                 htmlFor={name}
-                className="block mb-2 text-sm font-medium text-primary-85 dark:text-primary-70"
+                className="label"
             >
                 {text}
             </label>
@@ -37,7 +37,7 @@ function InputForm({
                 type={type}
                 name={name}
                 id={name}
-                className="bg-[rgba(53,66,139,0.13)] text-primary-85 text-sm rounded-lg focus:ring-primary-60 focus:border-primary-60 block w-full p-2.5 placeholder:text-primary-70 dark:bg-[rgba(43,54,114,0.59)] dark:border-primary-65 dark:placeholder-primary-70 dark:text-white dark:focus:ring-primary-60 dark:focus:border-primary-60 transition-all duration-300 ease-in-out"
+                className="input input-bordered w-full"
                 placeholder={placeholder}
             />
 

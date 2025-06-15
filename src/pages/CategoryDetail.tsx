@@ -4,6 +4,7 @@ import { CategoryService } from "../services/category.service";
 import { BookService } from "../services/book.services";
 import Category from "../models/Category";
 import Books from "../models/Books";
+import { BookOpen, ArrowLeftCircle } from "lucide-react"; // Icons
 
 function CategoryDetail() {
     const { id } = useParams<{ id: string }>();
@@ -16,15 +17,15 @@ function CategoryDetail() {
         const fetchCategoryDetails = async () => {
             setLoading(true);
             try {
-                // Fetch categoria
                 const categoryId = Number(id);
                 const categoryData = await CategoryService.getById(categoryId);
                 setCategory(categoryData);
 
-                // Fetch libros por categoria
                 const booksData = await BookService.getByCategoryId(categoryId);
-                //  filtramos los libros para que solo se muestren los de la misma categoria 
-                const filteredBooks = booksData.filter((book: { idCategory: number; }) => book.idCategory === categoryId);
+                const booksDataTyped: Books[] = booksData as Books[];
+                const filteredBooks: Books[] = booksDataTyped.filter(
+                    (book: Books) => book.idCategory === categoryId
+                );
                 setBooks(filteredBooks);
             } catch (error: unknown) {
                 setError(error instanceof Error ? error.message : "Error desconocido");
@@ -36,37 +37,58 @@ function CategoryDetail() {
         fetchCategoryDetails();
     }, [id]);
 
-    if (loading) return <div className="text-center text-primary-70">Cargando...</div>;
-    if (error) return <div className="text-center text-red-500">Error: {error}</div>;
-    if (!category) return <div className="text-center text-primary-70">Categoría no encontrada</div>;
+    if (loading)
+        return <div className="text-center text-primary-70">Cargando...</div>;
+    if (error)
+        return <div className="text-center text-red-500">Error: {error}</div>;
+    if (!category)
+        return (
+            <div className="text-center text-primary-70">
+                Categoría no encontrada.
+            </div>
+        );
 
     return (
-        <div className="max-w-screen-md mx-auto p-4 bg-[rgba(43,54,114,0.13)] rounded-lg shadow-md">
-            <div className="m-10 text-primary-85">
-                <div className="text-4xl font-extrabold text-primary-90 mb-2">Categoría: {category.name}</div>
-                <div className="mb-4">
-                    <span className="font-semibold text-primary-70">Libros en esta categoría:</span>
-                    {books.length > 0 ? (
-                        <ul className="list-disc pl-5">
-                            {books.map((book) => (
-                                <li key={book.id}>
-                                    <Link to={`/books/${book.id}`} className=" hover:underline">
-                                        {book.title}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <div className="text-primary-70">No hay libros en esta categoría.</div>
-                    )}
-                </div>
+        <div className="max-w-4xl mx-auto p-6 bg-base-100 rounded-lg shadow-md">
+            <div className="flex items-center justify-between mb-6">
+                <h1 className="text-3xl font-extrabold text-primary-90 flex items-center gap-2">
+                    <BookOpen className="h-8 w-8 text-primary-85" />
+                    Categoría: {category.name}
+                </h1>
+                <Link
+                    to="/categories"
+                    className="flex items-center gap-2 text-red-85 hover:text-red-90 transition"
+                >
+                    <ArrowLeftCircle className="h-5 w-5" />
+                    Volver
+                </Link>
             </div>
-            <Link
-                to={"/categories"}
-                className="mx-5 my-5 text-white bg-red-85 hover:bg-red-90 focus:ring-4 focus:outline-none focus:ring-red-70 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center transition-all duration-300 ease-in-out shadow-md"
-            >
-                Volver
-            </Link>
+
+            <section className="mb-6">
+                <h2 className="text-xl font-bold text-primary-85 mb-2">
+                    Libros en esta categoría:
+                </h2>
+                {books.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {books.map((book) => (
+                            <Link
+                                key={book.id}
+                                to={`/books/${book.id}`}
+                                className="p-4 bg-[rgba(43,54,114,0.05)] rounded-lg hover:bg-primary-60 hover:text-white transition shadow-md"
+                            >
+                                <h3 className="text-lg font-semibold">{book.title}</h3>
+                                <p className="text-sm text-primary-70">
+                                    Autor: {book.author}
+                                </p>
+                            </Link>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-primary-70 italic">
+                        No hay libros en esta categoría.
+                    </p>
+                )}
+            </section>
         </div>
     );
 }

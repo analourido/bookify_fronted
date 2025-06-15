@@ -115,6 +115,53 @@ export class ClubService {
         });
     }
 
+    async getBookHistory(clubId: number) {
+        try {
+            const response = await axios.get(`${API_URL_BASE}/clubs/${clubId}/book-history`, {
+                withCredentials: true
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error al cargar el historial de libros:', error);
+            throw error;
+        }
+    }
+
+    static async resetAllBooks(clubId: number) {
+        return await fetchAPI(`${API_URL_BASE}/clubs/${clubId}/reset-all-books`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+    }
+
+    static async resetSelectedBook(clubId: number) {
+        return await fetchAPI(`${API_URL_BASE}/clubs/${clubId}/reset-selected-book`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+    }
+
+    static async deleteProposedBook(clubBookId: number) {
+        return await fetchAPI(`${API_URL_BASE}/club-books/${clubBookId}`, {
+            method: 'DELETE',
+            credentials: 'include',
+        });
+    }
+
+    static async getVotes(clubId: number) {
+        return await fetchAPI(`${API_URL_BASE}/clubs/${clubId}/votes`, {
+            method: 'GET',
+            credentials: 'include'
+        });
+    }
+
+    static async removeVote(clubId: number) {
+        return await fetchAPI(`${API_URL_BASE}/clubs/${clubId}/vote`, {
+            method: 'DELETE',
+            credentials: 'include',
+        })
+    }
+
 
 
 }

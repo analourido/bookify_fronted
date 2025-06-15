@@ -32,68 +32,77 @@ function MyClubs() {
             .finally(() => setLoading(false));
     }, [user]);
 
-    if (loading) return <div className="text-center mt-8">Cargando clubs...</div>;
+    if (loading) return <div className="text-center mt-8 text-primary-70">Cargando clubs...</div>;
     if (error) return <div className="text-center text-red-700">{error}</div>;
 
+    const renderClubCard = (club: Club, isAdmin: boolean) => (
+        <div
+            key={club.id}
+            className="card bg-base-100 shadow-lg hover:shadow-xl transition border border-primary-60"
+        >
+            <div className="card-body">
+                <h4 className="card-title text-primary-85">
+                    {club.name}
+                    {isAdmin && (
+                        <span className="badge badge-secondary text-xs ml-2">Admin</span>
+                    )}
+                </h4>
+                <p className="text-primary-70">{club.description}</p>
+                <div className="mt-2 text-primary-60 text-sm">
+                    Creado el {new Date(club.createdAt).toLocaleDateString()}
+                </div>
+                <div className="flex justify-between items-center mt-4">
+                    <Link
+                        to={`/clubs/${club.id}`}
+                        className="btn btn-primary btn-sm"
+                    >
+                        Ver detalles
+                    </Link>
+                    {!isAdmin && (
+                        <div className="text-xs text-primary-70">
+                            Admin: {club.admin.name}
+                        </div>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+
     return (
-        <div className="max-w-screen-lg mx-auto px-4 py-8">
-            <h2 className="text-3xl font-bold text-primary-90 mb-4">Mis Clubs</h2>
+        <div className="max-w-6xl mx-auto p-4">
+            <h2 className="text-3xl font-bold text-primary mb-4">Mis Clubs</h2>
 
             {/* Clubs como admin */}
-            <div className="mb-8">
+            <section className="mb-10">
                 <h3 className="text-xl font-semibold text-primary-85 mb-2">
                     Clubs que has creado (Admin)
                 </h3>
                 {adminClubs.length ? (
-                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                        {adminClubs.map((club) => (
-                            <Link
-                                key={club.id}
-                                to={`/clubs/${club.id}`}
-                                className="block bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition"
-                            >
-                                <h4 className="text-lg font-semibold text-primary-85 mb-1">
-                                    {club.name}
-                                </h4>
-                                <p className="text-primary-70 text-sm">{club.description}</p>
-                                <p className="text-primary-60 text-xs mt-2">
-                                    Creado el {new Date(club.createdAt).toLocaleDateString()}
-                                </p>
-                            </Link>
-                        ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {adminClubs.map((club) => renderClubCard(club, true))}
                     </div>
                 ) : (
-                    <p className="text-primary-70">No has creado ningún club todavía.</p>
+                    <p className="text-primary-70">
+                        No has creado ningún club todavía.
+                    </p>
                 )}
-            </div>
+            </section>
 
             {/* Clubs como miembro */}
-            <div>
+            <section>
                 <h3 className="text-xl font-semibold text-primary-85 mb-2">
                     Clubs de los que formas parte
                 </h3>
                 {memberClubs.length ? (
-                    <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                        {memberClubs.map((club) => (
-                            <Link
-                                key={club.id}
-                                to={`/clubs/${club.id}`}
-                                className="block bg-white shadow-md rounded-lg p-4 hover:shadow-xl transition"
-                            >
-                                <h4 className="text-lg font-semibold text-primary-85 mb-1">
-                                    {club.name}
-                                </h4>
-                                <p className="text-primary-70 text-sm">{club.description}</p>
-                                <p className="text-primary-60 text-xs mt-2">
-                                    Creado el {new Date(club.createdAt).toLocaleDateString()}
-                                </p>
-                            </Link>
-                        ))}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {memberClubs.map((club) => renderClubCard(club, false))}
                     </div>
                 ) : (
-                    <p className="text-primary-70">No eres miembro de ningún club todavía.</p>
+                    <p className="text-primary-70">
+                        No eres miembro de ningún club todavía.
+                    </p>
                 )}
-            </div>
+            </section>
         </div>
     );
 }

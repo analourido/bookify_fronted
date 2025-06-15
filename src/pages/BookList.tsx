@@ -80,7 +80,7 @@ function Booklist() {
                             <figure className="p-4">
                                 <img
                                     src={book.coverUrl || 'img/placeholder.png'}
-                                    alt={`Portada de ${book.title}` || 'img/placeholder.png'}
+                                    alt={`Portada de ${book.title}`}
                                     className="h-60 w-full object-contain p-2 bg-base-200 rounded-md"
                                 />
                             </figure>
