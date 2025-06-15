@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { ClubService } from "../services/club.service";
 import { BookService } from "../services/book.services";
 import { useAuth } from "../contexts/AuthContext";
+import librosImg from "../assets/libros01.jpg";
 import toast from "react-hot-toast";
 
 interface Member {
@@ -273,7 +274,7 @@ function ClubDetail() {
       <div
         className="relative rounded-lg overflow-hidden shadow-md"
         style={{
-          backgroundImage: `linear-gradient(rgba(254, 245, 217,0.6), rgba(254, 245, 217,0.6)), url('/img/libros01.jpg')`,
+          backgroundImage: `linear-gradient(rgba(254, 245, 217,0.6), rgba(254, 245, 217,0.6)), url(${librosImg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
         }}

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
 import { useEffect, useState } from 'react';
+import logo from '../assets/logo_naranja.png';
 
 function Navbar() {
     const { user, isAdmin, isAuthenticated, logout } = useAuth()
@@ -31,7 +32,7 @@ function Navbar() {
         <nav className="bg-primary p-4">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                 <Link to="/" className="flex items-center space-x-3 rtl:space-x-reverse">
-                    <img src="img\logos\logo_naranja.png" className="h-8" alt="EmpleateTu Logo" />
+                    <img src={logo} className="h-8" alt="Bookify Logo" />
                     <span className="self-center text-2xl font-semibold whitespace-nowrap  drop-shadow-md">
                         Bookify
                     </span>

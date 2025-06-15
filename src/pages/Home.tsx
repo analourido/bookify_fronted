@@ -37,7 +37,7 @@ function Home() {
                         ].map((src, index) => (
                             <div className="carousel-item relative group w-64 flex-shrink-0" key={index}>
                                 <img
-                                    src={src}
+                                    src={`/${src}`}
                                     alt={`Imagen ${index}`}
                                     className="object-cover aspect-square w-full h-64 rounded-xl transition duration-300 group-hover:scale-105 shadow-md"
                                 />
