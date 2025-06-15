@@ -27,17 +27,17 @@ function Home() {
                     </h2>
                     <div className="carousel rounded-box flex gap-4 overflow-x-auto py-4">
                         {[
-                            "img/img01.jpg",
-                            "img/img02.jpg",
-                            "img/img03.jpg",
-                            "img/img04.jpg",
-                            "img/img05.jpg",
-                            "img/img06.jpg",
-                            "img/img07.jpg"
-                        ].map((src, index) => (
+                            "img01.jpg",
+                            "img02.jpg",
+                            "img03.jpg",
+                            "img04.jpg",
+                            "img05.jpg",
+                            "img06.jpg",
+                            "img07.jpg"
+                        ].map((file, index) => (
                             <div className="carousel-item relative group w-64 flex-shrink-0" key={index}>
                                 <img
-                                    src={`/${src}`}
+                                    src={`/img/${file}`}
                                     alt={`Imagen ${index}`}
                                     className="object-cover aspect-square w-full h-64 rounded-xl transition duration-300 group-hover:scale-105 shadow-md"
                                 />
