@@ -41,6 +41,13 @@ export class ClubService {
         })
     }
 
+    static async delete(id: number) {
+        return fetchAPI(API_URL_BASE + '/clubs/' + id, {
+            method: 'DELETE',
+        });
+    }
+
+
     static async create(club: Partial<Club>) {
         return await fetchAPI(API_URL_BASE + '/clubs', {
             method: 'POST',

@@ -32,6 +32,17 @@ function MyClubs() {
             .finally(() => setLoading(false));
     }, [user]);
 
+    const handleDeleteClub = async (clubId: number) => {
+        if (!window.confirm("¿Estás seguro de que quieres borrar este club? Esta acción no se puede deshacer.")) return;
+        try {
+            await ClubService.delete(clubId);
+            setAdminClubs((prev) => prev.filter((club) => club.id !== clubId));
+        } catch {
+            alert("Error al borrar el club. Inténtalo más tarde.");
+        }
+    };
+
+
     if (loading) return <div className="text-center mt-8 text-primary-70">Cargando clubs...</div>;
     if (error) return <div className="text-center text-red-700">{error}</div>;
 
@@ -58,7 +69,14 @@ function MyClubs() {
                     >
                         Ver detalles
                     </Link>
-                    {!isAdmin && (
+                    {isAdmin ? (
+                        <button
+                            onClick={() => handleDeleteClub(club.id)}
+                            className="btn btn-error btn-sm"
+                        >
+                            Borrar
+                        </button>
+                    ) : (
                         <div className="text-xs text-primary-70">
                             Admin: {club.admin.name}
                         </div>
@@ -67,6 +85,7 @@ function MyClubs() {
             </div>
         </div>
     );
+
 
     return (
         <div className="max-w-6xl mx-auto p-4">
